@@ -705,6 +705,7 @@ export function Settings() {
           type="text"
           value={accessStore.openaiUrl}
           placeholder={OPENAI_BASE_URL}
+          readOnly={true}
           onChange={(e) =>
             accessStore.update(
               (access) => (access.openaiUrl = e.currentTarget.value),
@@ -1318,12 +1319,12 @@ export function Settings() {
                   </ListItem>
 
                   {openAIConfigComponent}
-                  {azureConfigComponent}
+                  {/* {azureConfigComponent}
                   {googleConfigComponent}
                   {anthropicConfigComponent}
                   {baiduConfigComponent}
                   {byteDanceConfigComponent}
-                  {alibabaConfigComponent}
+                  {alibabaConfigComponent} */}
                 </>
               )}
             </>

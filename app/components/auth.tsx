@@ -32,8 +32,14 @@ export function AuthPage() {
 
   return (
     <div className={styles["auth-page"]}>
-      <div className={`no-dark ${styles["auth-logo"]}`}>
+      {/* <div className={`no-dark ${styles["auth-logo"]}`}>
         <BotIcon />
+      </div> */}
+      <div className={styles["auth-title"]}>
+        <img
+          width="250px"
+          src="https://file.aixiaoxin.cloud/image/aixiaoxin.png"
+        />
       </div>
 
       <div className={styles["auth-title"]}>{Locale.Auth.Title}</div>
@@ -50,6 +56,11 @@ export function AuthPage() {
           );
         }}
       />
+      {/* 如需办理会员，请联系客服：
+            <div className={styles["auth-title"]}>
+     <img width="100px" src="https://file.aixiaoxin.cloud/image/kefu.jpg"/>
+      </div> */}
+
       {!accessStore.hideUserApiKey ? (
         <>
           <div className={styles["auth-tips"]}>{Locale.Auth.SubTips}</div>
@@ -64,7 +75,10 @@ export function AuthPage() {
               );
             }}
           />
-          <input
+
+          {/* 禁用google的apikey */}
+
+          {/* <input
             className={styles["auth-input"]}
             type="password"
             placeholder={Locale.Settings.Access.Google.ApiKey.Placeholder}
@@ -74,7 +88,7 @@ export function AuthPage() {
                 (access) => (access.googleApiKey = e.currentTarget.value),
               );
             }}
-          />
+          /> */}
         </>
       ) : null}
 
@@ -92,6 +106,17 @@ export function AuthPage() {
           }}
         />
       </div>
+      <footer>
+        <div className={styles["auth-title"]}>
+          <a
+            color="rgb(202 103 103)"
+            href="https://beian.miit.gov.cn/"
+            target="_blank"
+          >
+            苏ICP备18002577号-2
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }
