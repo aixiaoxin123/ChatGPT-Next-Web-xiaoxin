@@ -37,7 +37,7 @@ export function AuthPage() {
       </div> */}
       <div className={styles["auth-title"]}>
         <img
-          width="250px"
+          width={200}
           src="https://file.aixiaoxin.cloud/image/aixiaoxin.png"
         />
       </div>
@@ -106,17 +106,22 @@ export function AuthPage() {
           }}
         />
       </div>
-      <footer>
-        <div className={styles["auth-title"]}>
-          <a
-            color="rgb(202 103 103)"
-            href="https://beian.miit.gov.cn/"
-            target="_blank"
-          >
-            苏ICP备18002577号-2
-          </a>
-        </div>
-      </footer>
+
+      <div
+        style={{
+          // backgroundColor: 'black',
+          color: "pink",
+          margin: 80,
+        }}
+      >
+        <a
+          color="rgb(202 103 103)"
+          href="https://beian.miit.gov.cn/"
+          target="_blank"
+        >
+          苏ICP备18002577号-2
+        </a>
+      </div>
     </div>
   );
 }
