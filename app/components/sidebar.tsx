@@ -31,6 +31,9 @@ import { isIOS, useMobileScreen } from "../utils";
 import dynamic from "next/dynamic";
 import { showConfirm, showToast } from "./ui-lib";
 
+//获取用户的key_num 等信息
+import { useAccessStore } from "../store";
+
 const ChatList = dynamic(async () => (await import("./chat-list")).ChatList, {
   loading: () => null,
 });
@@ -142,6 +145,8 @@ export function SideBar(props: { className?: string }) {
   );
 
   useHotKey();
+  //新增用户信息的定义，用于展示余额
+  const accessStore = useAccessStore();
 
   return (
     <div
@@ -199,6 +204,12 @@ export function SideBar(props: { className?: string }) {
         <ChatList narrow={shouldNarrow} />
       </div>
 
+      <div className={styles["sidebar-sub-title"]}>
+        <ul>
+          <li>用户类型：{accessStore.user_type_name}</li>
+          <li>剩余问答次数：{accessStore.key_num}</li>
+        </ul>
+      </div>
       <div className={styles["sidebar-tail"]}>
         <div className={styles["sidebar-actions"]}>
           <div className={styles["sidebar-action"] + " " + styles.mobile}>

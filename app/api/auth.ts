@@ -33,6 +33,9 @@ export function auth(req: NextRequest, modelProvider: ModelProvider) {
   const hashedCode = md5.hash(accessCode ?? "").trim();
 
   const serverConfig = getServerSideConfig();
+
+  //利用存储的结果进行验证
+
   console.log("[Auth] allowed hashed codes: ", [...serverConfig.codes]);
   console.log("[Auth] got access code:", accessCode);
   console.log("[Auth] hashed access code:", hashedCode);

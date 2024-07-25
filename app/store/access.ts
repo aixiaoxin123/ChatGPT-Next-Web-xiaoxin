@@ -41,10 +41,16 @@ const DEFAULT_ALIBABA_URL = isApp
 
 console.log("DEFAULT_ANTHROPIC_URL", DEFAULT_ANTHROPIC_URL);
 
+// const user_type_dict=JSON.stringify({"-1":"用户未登录","0":"普通用户","1":"黄金会员","2":"铂金会员"});
+
 const DEFAULT_ACCESS_STATE = {
   accessCode: "",
   useCustomConfig: true,
-
+  //新增用户类型、key_num的参数
+  key_num: -1,
+  user_type: -1,
+  user_type_name: "用户未登录",
+  request_state: false,
   provider: ServiceProvider.OpenAI,
 
   // openai
