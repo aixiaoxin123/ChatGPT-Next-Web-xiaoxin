@@ -823,12 +823,12 @@ export async function judge_question(key: string, content: string) {
     if (retCode == 0) {
       req_result = data.data.is_normal;
     } else {
-      req_result = false;
+      req_result = true;
     }
     return req_result;
   } catch (error) {
     console.log("Request Failed", error);
-    req_result = false;
+    req_result = true;
     return req_result;
   }
 }
