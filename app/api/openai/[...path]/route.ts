@@ -3,7 +3,12 @@ import { getServerSideConfig } from "@/app/config/server";
 import { ModelProvider, OpenaiPath } from "@/app/constant";
 import { prettyObject } from "@/app/utils/format";
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "../../auth";
+import {
+  auth,
+  query_account_by_key,
+  parseApiKey,
+  update_key_num,
+} from "../../auth";
 import { requestOpenai } from "../../common";
 
 const ALLOWD_PATH = new Set(Object.values(OpenaiPath));
@@ -44,17 +49,34 @@ async function handle(
       },
     );
   }
+  const authToken = req.headers.get("Authorization") ?? "";
 
-  const authResult = auth(req, ModelProvider.GPT);
+  // const body = await req.json()
+  // console.log("req.body :"+body.get(""))
+
+  // check if it is openai api key or user token
+  const { accessCode, apiKey } = parseApiKey(authToken);
+
+  const authResult = await auth(req, ModelProvider.GPT);
+  console.log("authResult");
+  // console.log(authResult)
   if (authResult.error) {
+    console.log("调用失败");
     return NextResponse.json(authResult, {
       status: 401,
     });
+  } else {
+    console.log("调用成功!");
+    //需要进行扣费
+    let step_num = 1;
+    const query_result = await update_key_num(accessCode, step_num);
+    console.log("减少问答次数-调用成功 query_result :" + query_result);
   }
 
   try {
     const response = await requestOpenai(req);
-
+    console.log("response");
+    // console.log(response)
     // list models
     if (subpath === OpenaiPath.ListModelPath && response.status === 200) {
       const resJson = (await response.json()) as OpenAIListModelResponse;
@@ -62,11 +84,20 @@ async function handle(
       return NextResponse.json(availableModels, {
         status: response.status,
       });
+    } else if (response.status === 401) {
+      let step_num = -1;
+      const query_result = await update_key_num(accessCode, step_num);
+      console.log("增加问答次数 query_result :" + query_result);
     }
 
     return response;
   } catch (e) {
+    console.log("response eror");
     console.error("[OpenAI] ", e);
+    let step_num = -1;
+    const query_result = await update_key_num(accessCode, step_num);
+    console.log("增加问答次数 query_result :" + query_result);
+
     return NextResponse.json(prettyObject(e));
   }
 }

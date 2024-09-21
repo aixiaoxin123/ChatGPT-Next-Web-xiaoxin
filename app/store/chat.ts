@@ -312,6 +312,22 @@ export const useChatStore = createPersistStore(
       },
 
       async onUserInput(content: string, attachImages?: string[]) {
+        // 需要进行更新key_num的状态
+        const accessStore = useAccessStore.getState();
+
+        console.log("开始检查问题的敏感词");
+        let judge_result = await judge_question(
+          accessStore.accessCode,
+          content,
+        );
+        if (!judge_result) {
+          // console.log("请检查你的问题，存在敏感词！")
+
+          alert("请检查你的问题，存在敏感词！");
+          return false;
+        } else {
+          // console.log("不存在敏感词！")
+        }
         const session = get().currentSession();
         const modelConfig = session.mask.modelConfig;
 
@@ -387,6 +403,14 @@ export const useChatStore = createPersistStore(
               get().onNewMessage(botMessage);
             }
             ChatControllerPool.remove(session.id, botMessage.id);
+
+            //进行存储问答记录
+            insert_qa_function(
+              accessStore.accessCode,
+              userMessage.content,
+              botMessage.content,
+            );
+            // console.log("结束问答记录存储！")
           },
           onError(error) {
             const isAborted = error.message.includes("aborted");
@@ -418,6 +442,9 @@ export const useChatStore = createPersistStore(
             );
           },
         });
+
+        await query_account_by_key(accessStore.accessCode);
+        // console.log("进行更新状态")
       },
 
       getMemoryPrompt() {
@@ -719,3 +746,139 @@ export const useChatStore = createPersistStore(
     },
   },
 );
+
+export async function query_account_by_key(key: string) {
+  // let accessStore =useAccessStore;
+  // const accessStore = useAccessStore.getState();
+
+  var path = "/api/mysql/query_secret_key";
+
+  var baseUrl = "https://www.aixiaoxin.cloud";
+
+  var req_data = { secret_key: key };
+
+  var fetchUrl = baseUrl + path;
+  var headers = {
+    "Content-Type": "application/json",
+    "Cache-Control": "no-store",
+  };
+  var key_num = -1;
+  var user_type = -1;
+
+  try {
+    let response = await fetch(fetchUrl, {
+      method: "post",
+      body: JSON.stringify(req_data),
+      headers: headers,
+    });
+    let data = await response.json();
+    // console.log(datas)
+    let retCode = data.retCode;
+    if (retCode == 0) {
+      key_num = data.data.key_num;
+      user_type = data.data.user_type;
+    }
+  } catch (error) {
+    console.log("Request Failed", error);
+    // let data = false;
+    // result_data=false
+    key_num = -1;
+    user_type = -2;
+  }
+
+  useAccessStore.setState({ key_num: key_num, user_type: user_type });
+}
+
+export async function judge_question(key: string, content: string) {
+  // let accessStore =useAccessStore;
+
+  // let step_num
+  // if (modelVersion.includes('gpt-4') || modelVersion.includes('gpt4'))
+  //   step_num = 5
+
+  // else
+  //   step_num = 1
+
+  var path = "/api/common/judge_sensitive_word";
+  // const url = 'https://www.aixiaoxin.cloud/api/mysql/sub_key_num'
+  var baseUrl = "https://www.aixiaoxin.cloud";
+
+  var req_data = { secret_key: key, content: content };
+  let req_result = true;
+  var fetchUrl = baseUrl + path;
+  var headers = {
+    "Content-Type": "application/json",
+    "Cache-Control": "no-store",
+  };
+
+  try {
+    let response = await fetch(fetchUrl, {
+      method: "post",
+      body: JSON.stringify(req_data),
+      headers: headers,
+    });
+    let data = await response.json();
+    // console.log(data)
+    let retCode = data.retCode;
+    if (retCode == 0) {
+      req_result = data.data.is_normal;
+    } else {
+      req_result = false;
+    }
+    return req_result;
+  } catch (error) {
+    console.log("Request Failed", error);
+    req_result = false;
+    return req_result;
+  }
+}
+
+export async function insert_qa_function(
+  key: string,
+  question: any,
+  answer: any,
+) {
+  // let accessStore =useAccessStore;
+
+  // let step_num
+  // if (modelVersion.includes('gpt-4') || modelVersion.includes('gpt4'))
+  //   step_num = 5
+
+  // else
+  //   step_num = 1
+
+  // https://www.aixiaoxin.cloud
+  var path = "/api/mysql/insert_qa";
+  // const url = 'https://www.aixiaoxin.cloud/api/mysql/sub_key_num'
+  var baseUrl = "https://www.aixiaoxin.cloud";
+  // const requet_data_qav2 = { secret_key:key, question: question, answer: answer }
+
+  var req_data = { secret_key: key, question: question, answer: answer };
+  let req_result = true;
+  var fetchUrl = baseUrl + path;
+  var headers = {
+    "Content-Type": "application/json",
+    "Cache-Control": "no-store",
+  };
+
+  try {
+    let response = await fetch(fetchUrl, {
+      method: "post",
+      body: JSON.stringify(req_data),
+      headers: headers,
+    });
+    let data = await response.json();
+    // console.log(data)
+    let retCode = data.retCode;
+    if (retCode == 0) {
+      req_result = true;
+    } else {
+      req_result = false;
+    }
+    return req_result;
+  } catch (error) {
+    console.log("Request Failed", error);
+    req_result = false;
+    return req_result;
+  }
+}
