@@ -137,6 +137,11 @@ export const useAccessStore = createPersistStore(
     isAuthorized() {
       this.fetch();
 
+      // 进行验证余额
+      console.log(get());
+      console.log(get().key_num);
+      console.log(get().key_num > -1);
+
       // has token or has code or disabled access control
       return (
         this.isValidOpenAI() ||
@@ -147,7 +152,8 @@ export const useAccessStore = createPersistStore(
         this.isValidByteDance() ||
         this.isValidAlibaba() ||
         !this.enabledAccessControl() ||
-        (this.enabledAccessControl() && ensure(get(), ["accessCode"]))
+        (this.enabledAccessControl() && ensure(get(), ["accessCode"])) ||
+        get().key_num > -1
       );
     },
     fetch() {

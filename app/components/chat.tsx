@@ -981,9 +981,12 @@ function _Chat() {
     session.messages.at(0)?.content !== BOT_HELLO.content
   ) {
     const copiedHello = Object.assign({}, BOT_HELLO);
+    console.log(accessStore.isAuthorized());
     if (!accessStore.isAuthorized()) {
       copiedHello.content = Locale.Error.Unauthorized;
     }
+    console.log("验证通过");
+
     context.push(copiedHello);
   }
 
