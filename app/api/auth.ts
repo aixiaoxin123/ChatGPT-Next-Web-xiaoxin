@@ -4,7 +4,7 @@ import md5 from "spark-md5";
 import { ACCESS_CODE_PREFIX, ModelProvider } from "../constant";
 import { ensure } from "../utils/clone";
 
-let result_data = {};
+let result_data = { key_num: -1 };
 
 function getIP(req: NextRequest) {
   let ip = req.ip ?? req.headers.get("x-real-ip");
@@ -80,15 +80,15 @@ export async function auth(req: NextRequest, modelProvider: ModelProvider) {
   // console.log(result_data.key_num)
   // console.log(result_data.user_type)
   if (result_data) {
-    let key_num = result_data.key_num;
-    let user_type = result_data.user_type;
+    // let key_num = result_data.key_num;
+    // let user_type = result_data.user_type;
     console.log("进入调用次数的判断");
-    if (key_num < 1) {
+    if (result_data.key_num < 1) {
       // console.log("进入 判断serverConfig");
       // console.log(serverConfig);
       return {
         error: true,
-        msg: "账户余额不足，剩余调用次数为：" + key_num,
+        msg: "账户余额不足!",
       };
     } else {
       console.log("账户余额大于0，可以进行访问");
@@ -192,7 +192,7 @@ export async function query_account_by_key(key: string) {
     if (retCode == 0) {
       result_data = data.data;
     } else {
-      result_data = false;
+      result_data = { key_num: -1 };
     }
 
     // console.log(result_data)
@@ -200,8 +200,7 @@ export async function query_account_by_key(key: string) {
     return result_data;
   } catch (error) {
     console.log("Request Failed", error);
-    let data = false;
-    result_data = false;
+    result_data = { key_num: -1 };
     return result_data;
   }
 }
