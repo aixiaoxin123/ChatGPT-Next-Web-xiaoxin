@@ -52,7 +52,7 @@ const DEFAULT_ACCESS_STATE = {
   user_type_name: "用户未登录",
   request_state: false,
   provider: ServiceProvider.OpenAI,
-
+  userApiKey: "",
   // openai
   openaiUrl: DEFAULT_OPENAI_URL,
   openaiApiKey: "",

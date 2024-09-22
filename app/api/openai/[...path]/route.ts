@@ -68,9 +68,11 @@ async function handle(
   } else {
     console.log("调用成功!");
     //需要进行扣费
-    let step_num = 1;
-    const query_result = await update_key_num(accessCode, step_num);
-    console.log("减少问答次数-调用成功 query_result :" + query_result);
+    if (!apiKey) {
+      let step_num = 1;
+      const query_result = await update_key_num(accessCode, step_num);
+      console.log("减少问答次数-调用成功 query_result :" + query_result);
+    }
   }
 
   try {
@@ -85,18 +87,21 @@ async function handle(
         status: response.status,
       });
     } else if (response.status === 401) {
-      let step_num = -1;
-      const query_result = await update_key_num(accessCode, step_num);
-      console.log("增加问答次数 query_result :" + query_result);
+      //需要进行扣费
+      if (!apiKey) {
+        let step_num = -1;
+        const query_result = await update_key_num(accessCode, step_num);
+        console.log("增加问答次数 query_result :" + query_result);
+      }
     }
 
     return response;
   } catch (e) {
     console.log("response eror");
     console.error("[OpenAI] ", e);
-    let step_num = -1;
-    const query_result = await update_key_num(accessCode, step_num);
-    console.log("增加问答次数 query_result :" + query_result);
+    // let step_num = -1;
+    // const query_result = await update_key_num(accessCode, step_num);
+    // console.log("增加问答次数 query_result :" + query_result);
 
     return NextResponse.json(prettyObject(e));
   }

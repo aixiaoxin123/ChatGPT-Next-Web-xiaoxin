@@ -4,7 +4,7 @@ import md5 from "spark-md5";
 import { ACCESS_CODE_PREFIX, ModelProvider } from "../constant";
 import { ensure } from "../utils/clone";
 
-let result_data = { key_num: -1 };
+let result_data = { key_num: -1, user_type: -1 };
 
 function getIP(req: NextRequest) {
   let ip = req.ip ?? req.headers.get("x-real-ip");
@@ -43,6 +43,7 @@ export async function auth(req: NextRequest, modelProvider: ModelProvider) {
   //利用存储的结果进行验证
   // let query_result
   // query_result= "进入api调用之前";
+  // console.log("apiKey: "+apiKey)
   console.log("进入api调用之前");
   const query_result = await query_account_by_key(accessCode);
   // console.log(query_result)
@@ -79,7 +80,7 @@ export async function auth(req: NextRequest, modelProvider: ModelProvider) {
 
   // console.log(result_data.key_num)
   // console.log(result_data.user_type)
-  if (result_data) {
+  if (result_data && !apiKey) {
     // let key_num = result_data.key_num;
     // let user_type = result_data.user_type;
     console.log("进入调用次数的判断");
@@ -93,24 +94,26 @@ export async function auth(req: NextRequest, modelProvider: ModelProvider) {
     } else {
       console.log("账户余额大于0，可以进行访问");
     }
+  } else if (apiKey) {
+    console.log("利用用户的apikey，未进入调用次数的判断");
   } else {
-    // console.log("未进入调用次数的判断")
     return {
       error: true,
       msg: "网络连接失败或者访问密码错误,请重新输入邀请码！",
     };
   }
 
-  if (serverConfig.hideUserApiKey && !!apiKey) {
-    return {
-      error: true,
-      msg: "you are not allowed to access with your own api key",
-    };
-  }
+  // if (serverConfig.hideUserApiKey && !!apiKey) {
+  //   return {
+  //     error: true,
+  //     msg: "you are not allowed to access with your own api key",
+  //   };
+  // }
+
   // console.log(req.headers)
   // if user does not provide an api key, inject system api key
   if (!apiKey) {
-    // console.log("进入apikey的判断")
+    console.log("进入apikey的判断");
     const serverConfig = getServerSideConfig();
 
     // const systemApiKey =
@@ -156,7 +159,9 @@ export async function auth(req: NextRequest, modelProvider: ModelProvider) {
       console.log("[Auth] admin did not provide an api key");
     }
   } else {
-    console.log("[Auth] use user api key");
+    console.log("给用户的apikey进行赋值");
+    req.headers.set("Authorization", `Bearer ${apiKey}`);
+    console.log("[Auth] use user api key:" + apiKey);
   }
   return {
     error: false,
@@ -192,7 +197,7 @@ export async function query_account_by_key(key: string) {
     if (retCode == 0) {
       result_data = data.data;
     } else {
-      result_data = { key_num: -1 };
+      result_data = { key_num: -1, user_type: -1 };
     }
 
     // console.log(result_data)
@@ -200,7 +205,7 @@ export async function query_account_by_key(key: string) {
     return result_data;
   } catch (error) {
     console.log("Request Failed", error);
-    result_data = { key_num: -1 };
+    result_data = { key_num: -1, user_type: -1 };
     return result_data;
   }
 }

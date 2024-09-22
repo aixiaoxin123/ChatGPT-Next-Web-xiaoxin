@@ -4,6 +4,7 @@ import Locale, { getLang } from "../locales";
 import { showToast } from "../components/ui-lib";
 import { ModelConfig, ModelType, useAppConfig } from "./config";
 import { createEmptyMask, Mask } from "./mask";
+// import {useState} from "react";
 import {
   DEFAULT_INPUT_TEMPLATE,
   DEFAULT_MODELS,
@@ -26,6 +27,7 @@ import { nanoid } from "nanoid";
 import { createPersistStore } from "../utils/store";
 import { collectModelsWithDefaultModel } from "../utils/model";
 import { useAccessStore } from "./access";
+import React from "react";
 
 export type ChatMessage = RequestMessage & {
   date: string;
@@ -320,6 +322,7 @@ export const useChatStore = createPersistStore(
           accessStore.accessCode,
           content,
         );
+
         if (!judge_result) {
           // console.log("请检查你的问题，存在敏感词！")
 
@@ -333,6 +336,16 @@ export const useChatStore = createPersistStore(
 
         const userContent = fillTemplateWith(content, modelConfig);
         console.log("[User Input] after template: ", userContent);
+        // alert(modelConfig.model);
+        // const [userInput, setUserInput] = useState("");
+        let model_type = modelConfig.model;
+        if (model_type.includes("gpt-4o")) {
+          if (accessStore.user_type < 2) {
+            alert("gpt4系列模型，需要开通会员才可以使用！请更换其他模型！");
+            // setUserInput("");
+            return false;
+          }
+        }
 
         let mContent: string | MultimodalContent[] = userContent;
 
@@ -407,6 +420,7 @@ export const useChatStore = createPersistStore(
             //进行存储问答记录
             insert_qa_function(
               accessStore.accessCode,
+              accessStore.openaiApiKey,
               userMessage.content,
               botMessage.content,
             );
@@ -749,7 +763,7 @@ export const useChatStore = createPersistStore(
 
 export async function query_account_by_key(key: string) {
   // let accessStore =useAccessStore;
-  // const accessStore = useAccessStore.getState();
+  const accessStore = useAccessStore.getState();
 
   var path = "/api/mysql/query_secret_key";
 
@@ -783,10 +797,33 @@ export async function query_account_by_key(key: string) {
     // let data = false;
     // result_data=false
     key_num = -1;
-    user_type = -2;
+    user_type = -1;
+  }
+  let user_type_name;
+  if (user_type === 0) {
+    user_type_name = "普通用户";
+  } else if (user_type === 1) {
+    user_type_name = "黄金会员";
+  } else if (user_type === 2) {
+    user_type_name = "铂金会员";
+  } else {
+    user_type_name = "用户未登录";
   }
 
-  useAccessStore.setState({ key_num: key_num, user_type: user_type });
+  if (accessStore.openaiApiKey) {
+    user_type_name = "API会员";
+    useAccessStore.setState({
+      key_num: key_num,
+      user_type: user_type,
+      user_type_name: user_type_name,
+    });
+  } else {
+    useAccessStore.setState({
+      key_num: key_num,
+      user_type: user_type,
+      user_type_name: user_type_name,
+    });
+  }
 }
 
 export async function judge_question(key: string, content: string) {
@@ -835,6 +872,7 @@ export async function judge_question(key: string, content: string) {
 
 export async function insert_qa_function(
   key: string,
+  openaiApiKey: any,
   question: any,
   answer: any,
 ) {
@@ -852,7 +890,9 @@ export async function insert_qa_function(
   // const url = 'https://www.aixiaoxin.cloud/api/mysql/sub_key_num'
   var baseUrl = "https://www.aixiaoxin.cloud";
   // const requet_data_qav2 = { secret_key:key, question: question, answer: answer }
-
+  if (!key) {
+    key = openaiApiKey;
+  }
   var req_data = { secret_key: key, question: question, answer: answer };
   let req_result = true;
   var fetchUrl = baseUrl + path;

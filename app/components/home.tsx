@@ -136,33 +136,63 @@ function Screen() {
   }, []);
 
   return (
-    <div
-      className={
-        styles.container +
-        ` ${shouldTightBorder ? styles["tight-container"] : styles.container} ${
-          getLang() === "ar" ? styles["rtl-screen"] : ""
-        }`
-      }
-    >
-      {isAuth ? (
-        <>
-          <AuthPage />
-        </>
-      ) : (
-        <>
-          <SideBar className={isHome ? styles["sidebar-show"] : ""} />
+    <div>
+      <div
+        className={
+          styles.container +
+          ` ${
+            shouldTightBorder ? styles["tight-container"] : styles.container
+          } ${getLang() === "ar" ? styles["rtl-screen"] : ""}`
+        }
+      >
+        {isAuth ? (
+          <>
+            <AuthPage />
+          </>
+        ) : (
+          <>
+            <SideBar className={isHome ? styles["sidebar-show"] : ""} />
 
-          <div className={styles["window-content"]} id={SlotID.AppBody}>
-            <Routes>
-              <Route path={Path.Home} element={<Chat />} />
-              <Route path={Path.NewChat} element={<NewChat />} />
-              <Route path={Path.Masks} element={<MaskPage />} />
-              <Route path={Path.Chat} element={<Chat />} />
-              <Route path={Path.Settings} element={<Settings />} />
-            </Routes>
-          </div>
-        </>
-      )}
+            <div className={styles["window-content"]} id={SlotID.AppBody}>
+              <Routes>
+                <Route path={Path.Home} element={<Chat />} />
+                <Route path={Path.NewChat} element={<NewChat />} />
+                <Route path={Path.Masks} element={<MaskPage />} />
+                <Route path={Path.Chat} element={<Chat />} />
+                <Route path={Path.Settings} element={<Settings />} />
+              </Routes>
+            </div>
+          </>
+        )}
+      </div>
+      <div
+        style={{
+          // backgroundColor: 'black',
+          color: "pink",
+          margin: 5,
+          textAlign: "center",
+        }}
+      >
+        <div>
+          <a
+            color="rgb(202 103 103)"
+            href="https://beian.miit.gov.cn/"
+            target="_blank"
+          >
+            苏ICP备18002577号-2
+          </a>
+        </div>
+        <div>
+          {/* style="display:inline-block;text-decoration:none;"><img src="" style="float:left;"><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:rgb(202 103 103);" */}
+          <a
+            target="_blank"
+            color="rgb(202 103 103)"
+            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=32011502011927"
+          >
+            苏公网安备 32011502011927号
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

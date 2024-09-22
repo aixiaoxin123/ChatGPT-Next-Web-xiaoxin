@@ -40,68 +40,79 @@ function wrapPromise(promise: Promise<any>) {
   };
 }
 
-function query_account_by_key(key: string, accessStore: any, navigate: any) {
+function query_account_by_key(
+  key: string,
+  accessStore: any,
+  navigate: any,
+  curr_openaiApiKey: string,
+) {
   // let accessStore =useAccessStore;
+  if (curr_openaiApiKey.includes("sk-")) {
+    accessStore.key_num = -1;
+    accessStore.user_type = 2;
+    accessStore.user_type_name = "API会员";
+    navigate(Path.Chat);
+  } else {
+    var path = "/api/mysql/query_secret_key";
 
-  var path = "/api/mysql/query_secret_key";
+    var baseUrl = "https://www.aixiaoxin.cloud";
 
-  var baseUrl = "https://www.aixiaoxin.cloud";
+    var req_data = { secret_key: key };
 
-  var req_data = { secret_key: key };
+    var fetchUrl = baseUrl + path;
+    var headers = {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store",
+    };
+    var key_num = -1;
+    var user_type = -1;
 
-  var fetchUrl = baseUrl + path;
-  var headers = {
-    "Content-Type": "application/json",
-    "Cache-Control": "no-store",
-  };
-  var key_num = -1;
-  var user_type = -1;
+    fetch(fetchUrl, {
+      method: "post",
+      body: JSON.stringify(req_data),
+      headers: headers,
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        // Set default model from env request
+        // alert(res.data)
+        // console.log(res.data);
+        key_num = res.data.key_num;
+        user_type = res.data.user_type;
+        // alert(key_num + "/" + user_type);
 
-  fetch(fetchUrl, {
-    method: "post",
-    body: JSON.stringify(req_data),
-    headers: headers,
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      // Set default model from env request
-      // alert(res.data)
-      console.log(res.data);
-      key_num = res.data.key_num;
-      user_type = res.data.user_type;
-      alert(key_num + "/" + user_type);
-
-      if (key_num) {
-        accessStore.key_num = key_num;
-        accessStore.user_type = user_type;
-        if (user_type === 0) {
-          accessStore.user_type_name = "普通用户";
-        } else if (user_type === 1) {
-          accessStore.user_type_name = "黄金会员";
-        } else if (user_type === 2) {
-          accessStore.user_type_name = "铂金会员";
+        if (key_num) {
+          accessStore.key_num = key_num;
+          accessStore.user_type = user_type;
+          if (user_type === 0) {
+            accessStore.user_type_name = "普通用户";
+          } else if (user_type === 1) {
+            accessStore.user_type_name = "黄金会员";
+          } else if (user_type === 2) {
+            accessStore.user_type_name = "铂金会员";
+          } else {
+            accessStore.user_type_name = "用户未登录";
+          }
+          // console.log(accessStore.key_num);
+          // console.log(accessStore.user_type);
+          // alert("用户登录成功！");
+          navigate(Path.Chat);
         } else {
-          accessStore.user_type_name = "用户未登录";
+          alert("邀请码错误，请关注  公众号：AI小新 获取！");
+          accessStore.key_num = -2;
+          accessStore.user_type = -2;
+          // console.log(accessStore.key_num);
+          // console.log(accessStore.user_type);
         }
-        console.log(accessStore.key_num);
-        console.log(accessStore.user_type);
-        alert("用户登录成功！");
-        navigate(Path.Chat);
-      } else {
-        alert("邀请码错误，请关注公众号获取！");
-        accessStore.key_num = -2;
-        accessStore.user_type = -2;
-        console.log(accessStore.key_num);
-        console.log(accessStore.user_type);
-      }
-    })
-    .catch(() => {
-      alert("调用余额查询失败！");
-      // return {"key_num":-1,"user_type":-1}
-    })
-    .finally(() => {
-      // alert("结束")
-    });
+      })
+      .catch(() => {
+        // alert("调用余额查询失败！");
+        // return {"key_num":-1,"user_type":-1}
+      })
+      .finally(() => {
+        // alert("结束")
+      });
+  }
 }
 export function AuthPage() {
   const navigate = useNavigate();
@@ -110,13 +121,20 @@ export function AuthPage() {
   const goHome = () => navigate(Path.Home);
   const goChat = () => {
     let curr_accesscode = accessStore.accessCode;
-    alert(curr_accesscode);
+    let curr_openaiApiKey = accessStore.openaiApiKey;
+
+    // alert(curr_openaiApiKey);
 
     accessStore.request_state = false;
 
     //进行查询邀请码，若错误则继续留在登录页面，若正确则访问主页；
 
-    query_account_by_key(curr_accesscode, accessStore, navigate);
+    query_account_by_key(
+      curr_accesscode,
+      accessStore,
+      navigate,
+      curr_openaiApiKey,
+    );
   };
   const resetAccessCode = () => {
     accessStore.update((access) => {
@@ -139,15 +157,21 @@ export function AuthPage() {
       </div> */}
 
       {/* 将下面的进行注释 */}
-      {/* <div className={styles["auth-title"]}>
+      <div className={styles["auth-title"]}>
+        {/* 公众号： */}
         <img
-          width={200}
+          width={300}
           src="https://file.aixiaoxin.cloud/image/aixiaoxin.png"
         />
-      </div> */}
+        {/* 微信号：
+        <img width="100px" src="https://file.aixiaoxin.cloud/image/kefu.jpg"/> */}
+      </div>
 
-      <div className={styles["auth-title"]}>{Locale.Auth.Title}</div>
-      <div className={styles["auth-tips"]}>{Locale.Auth.Tips}</div>
+      <div className={styles["auth-tips"]}>{Locale.Auth.Title}</div>
+      <div className={styles["auth-tips"]}>
+        普通用户每天可以领取免费问答次数，如需开通会员，可以联系作者！
+      </div>
+      <div className={styles["auth-title"]}>{Locale.Auth.Tips}</div>
 
       <input
         className={styles["auth-input"]}
@@ -161,17 +185,13 @@ export function AuthPage() {
           );
         }}
       />
-      {/* 如需办理会员，请联系客服：
-            <div className={styles["auth-title"]}>
-     <img width="100px" src="https://file.aixiaoxin.cloud/image/kefu.jpg"/>
-      </div> */}
 
       {!accessStore.hideUserApiKey ? (
         <>
           <div className={styles["auth-tips"]}>{Locale.Auth.SubTips}</div>
           <input
             className={styles["auth-input"]}
-            type="password"
+            type="text"
             placeholder={Locale.Settings.Access.OpenAI.ApiKey.Placeholder}
             value={accessStore.openaiApiKey}
             onChange={(e) => {
@@ -212,13 +232,20 @@ export function AuthPage() {
         />
       </div>
 
+      {/* 作者的微信号 */}
+
+      {/* <div className={styles["auth-tips"]}>如需办理会员，可以联系作者</div>
+            <div className={styles["auth-title"]}>
+     <img width="100px" src="https://file.aixiaoxin.cloud/image/kefu.jpg"/>
+      </div> */}
+
       {/* 将下面的进行注释 */}
 
       {/* <div
         style={{
           // backgroundColor: 'black',
           color: "pink",
-          margin: 80,
+          margin: 40,
         }}
       >
         <a

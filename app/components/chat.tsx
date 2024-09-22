@@ -794,6 +794,7 @@ function _Chat() {
   const doSubmit = (userInput: string) => {
     if (userInput.trim() === "") return;
     const matchCommand = chatCommands.match(userInput);
+
     if (matchCommand.matched) {
       setUserInput("");
       setPromptHints([]);
