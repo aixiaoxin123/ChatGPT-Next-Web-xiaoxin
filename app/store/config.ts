@@ -48,7 +48,8 @@ export const DEFAULT_CONFIG = {
   models: DEFAULT_MODELS as any as LLMModel[],
 
   modelConfig: {
-    model: "gpt-4o-mini" as ModelType,
+    // model: "gpt-4o-mini" as ModelType,
+    model: "deepseek-chat" as ModelType, //修改deepseek-chat作为基础聊天模型
     providerName: "OpenAI" as ServiceProvider,
     temperature: 0.5,
     top_p: 1,

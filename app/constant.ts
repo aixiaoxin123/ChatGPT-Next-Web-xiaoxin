@@ -205,22 +205,22 @@ export const KnowledgeCutOffDate: Record<string, string> = {
 };
 
 const openaiModels = [
-  "gpt-3.5-turbo",
-  "gpt-3.5-turbo-1106",
-  "gpt-3.5-turbo-0125",
-  "gpt-4",
-  "gpt-4-0613",
-  "gpt-4-32k",
-  "gpt-4-32k-0613",
-  "gpt-4-turbo",
-  "gpt-4-turbo-preview",
-  "gpt-4o",
-  "gpt-4o-2024-05-13",
+  // "gpt-3.5-turbo",
+  // "gpt-3.5-turbo-1106",
+  // "gpt-3.5-turbo-0125",
+  // "gpt-4",
+  // "gpt-4-0613",
+  // "gpt-4-32k",
+  // "gpt-4-32k-0613",
+  // "gpt-4-turbo",
+  // "gpt-4-turbo-preview",
+  // "gpt-4o",
+  // "gpt-4o-2024-05-13",
   "gpt-4o-mini",
-  "gpt-4o-mini-2024-07-18",
-  "gpt-4-vision-preview",
-  "gpt-4-turbo-2024-04-09",
-  "gpt-4-1106-preview",
+  // "gpt-4o-mini-2024-07-18",
+  // "gpt-4-vision-preview",
+  // "gpt-4-turbo-2024-04-09",
+  // "gpt-4-1106-preview",
 ];
 
 const googleModels = [
@@ -273,7 +273,18 @@ const alibabaModes = [
   "qwen-max-longcontext",
 ];
 
+const deepseekModes = ["deepseek-chat", "deepseek-coder"];
+
 export const DEFAULT_MODELS = [
+  ...deepseekModes.map((name) => ({
+    name,
+    available: true,
+    provider: {
+      id: "openai",
+      providerName: "deepseek",
+      providerType: "openai",
+    },
+  })),
   ...openaiModels.map((name) => ({
     name,
     available: true,
@@ -283,60 +294,60 @@ export const DEFAULT_MODELS = [
       providerType: "openai",
     },
   })),
-  ...openaiModels.map((name) => ({
-    name,
-    available: true,
-    provider: {
-      id: "azure",
-      providerName: "Azure",
-      providerType: "azure",
-    },
-  })),
-  ...googleModels.map((name) => ({
-    name,
-    available: true,
-    provider: {
-      id: "google",
-      providerName: "Google",
-      providerType: "google",
-    },
-  })),
-  ...anthropicModels.map((name) => ({
-    name,
-    available: true,
-    provider: {
-      id: "anthropic",
-      providerName: "Anthropic",
-      providerType: "anthropic",
-    },
-  })),
-  ...baiduModels.map((name) => ({
-    name,
-    available: true,
-    provider: {
-      id: "baidu",
-      providerName: "Baidu",
-      providerType: "baidu",
-    },
-  })),
-  ...bytedanceModels.map((name) => ({
-    name,
-    available: true,
-    provider: {
-      id: "bytedance",
-      providerName: "ByteDance",
-      providerType: "bytedance",
-    },
-  })),
-  ...alibabaModes.map((name) => ({
-    name,
-    available: true,
-    provider: {
-      id: "alibaba",
-      providerName: "Alibaba",
-      providerType: "alibaba",
-    },
-  })),
+  // ...openaiModels.map((name) => ({
+  //   name,
+  //   available: false,
+  //   provider: {
+  //     id: "azure",
+  //     providerName: "Azure",
+  //     providerType: "azure",
+  //   },
+  // })),
+  // ...googleModels.map((name) => ({
+  //   name,
+  //   available: false,
+  //   provider: {
+  //     id: "google",
+  //     providerName: "Google",
+  //     providerType: "google",
+  //   },
+  // })),
+  // ...anthropicModels.map((name) => ({
+  //   name,
+  //   available: false,
+  //   provider: {
+  //     id: "anthropic",
+  //     providerName: "Anthropic",
+  //     providerType: "anthropic",
+  //   },
+  // })),
+  // ...baiduModels.map((name) => ({
+  //   name,
+  //   available: false,
+  //   provider: {
+  //     id: "baidu",
+  //     providerName: "Baidu",
+  //     providerType: "baidu",
+  //   },
+  // })),
+  // ...bytedanceModels.map((name) => ({
+  //   name,
+  //   available: false,
+  //   provider: {
+  //     id: "bytedance",
+  //     providerName: "ByteDance",
+  //     providerType: "bytedance",
+  //   },
+  // })),
+  // ...alibabaModes.map((name) => ({
+  //   name,
+  //   available: false,
+  //   provider: {
+  //     id: "alibaba",
+  //     providerName: "Alibaba",
+  //     providerType: "alibaba",
+  //   },
+  // })),
 ] as const;
 
 export const CHAT_PAGE_SIZE = 15;

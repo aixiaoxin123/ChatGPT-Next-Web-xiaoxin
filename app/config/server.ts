@@ -98,6 +98,10 @@ export const getServerSideConfig = () => {
   const disableGPT4 = !!process.env.DISABLE_GPT4;
   let customModels = process.env.CUSTOM_MODELS ?? "";
   let defaultModel = process.env.DEFAULT_MODEL ?? "";
+  // 固定住，写死模型列表；
+
+  // let customModels = "-all,+deepseek-chat,+deepseek-coder,+gpt-4o-mini";
+  // let defaultModel = "deepseek-chat";
 
   if (disableGPT4) {
     if (customModels) customModels += ",";

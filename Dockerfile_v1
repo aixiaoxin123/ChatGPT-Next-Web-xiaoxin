@@ -1,0 +1,12 @@
+FROM yidadaa/chatgpt-next-web AS base
+
+FROM base AS deps
+
+ENV PROXY_URL=""
+ENV OPENAI_API_KEY=""
+ENV GOOGLE_API_KEY=""
+ENV CODE=""
+ENV BASE_URL=""
+ENV CUSTOM_MODELS=""
+ENV DEFAULT_MODEL=""
+
