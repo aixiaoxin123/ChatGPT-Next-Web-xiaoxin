@@ -154,7 +154,7 @@ export function MessageExporter() {
 
   const [exportConfig, setExportConfig] = useState({
     format: "image" as ExportFormat,
-    includeContext: true,
+    includeContext: false,
   });
 
   function updateExportConfig(updater: (config: typeof exportConfig) => void) {
@@ -539,9 +539,10 @@ export function ImagePreviewer(props: {
           </div>
 
           <div>
-            <div className={styles["main-title"]}>NextChat</div>
+            <div className={styles["main-title"]}>AI小新智能问答</div>
             <div className={styles["sub-title"]}>
-              github.com/Yidadaa/ChatGPT-Next-Web
+              {/* github.com/Yidadaa/ChatGPT-Next-Web */}
+              aixiaoxin.cloud
             </div>
             <div className={styles["icons"]}>
               <ExportAvatar avatar={config.avatar} />
