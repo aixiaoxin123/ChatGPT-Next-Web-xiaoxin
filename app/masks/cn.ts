@@ -114,6 +114,7 @@ export const CN_MASKS: BuiltinMask[] = [
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 1,
@@ -321,6 +322,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 1,
@@ -347,6 +349,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 1,
@@ -373,6 +376,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 1,
@@ -399,6 +403,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-coder(deepseek)",
       temperature: 1,
@@ -444,6 +449,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 1,
@@ -470,6 +476,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 1,
@@ -496,6 +503,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 1,
@@ -522,6 +530,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 1,
@@ -548,6 +557,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 1,
@@ -574,6 +584,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 1,
@@ -600,6 +611,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 1,
@@ -626,6 +638,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 1,
@@ -658,6 +671,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 0.5,
@@ -684,6 +698,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 1,
@@ -717,6 +732,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 1,
@@ -750,6 +766,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 1,
@@ -808,6 +825,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "deepseek-chat(deepseek)",
       temperature: 1,
@@ -840,6 +858,7 @@ line x1="66" y1="33" x2="110" y2="33" stroke="#8A4419" stroke-width="8"/>
         date: "",
       },
     ],
+    hideContext: true,
     modelConfig: {
       model: "gpt-4",
       temperature: 0.5,

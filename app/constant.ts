@@ -273,7 +273,7 @@ const alibabaModes = [
   "qwen-max-longcontext",
 ];
 
-const deepseekModes = ["deepseek-chat", "deepseek-coder"];
+const deepseekModes = ["deepseek-chat", "deepseek-coder", "deepseek-r1"];
 
 export const DEFAULT_MODELS = [
   ...deepseekModes.map((name) => ({

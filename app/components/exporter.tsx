@@ -542,7 +542,11 @@ export function ImagePreviewer(props: {
             <div className={styles["main-title"]}>AI小新智能问答</div>
             <div className={styles["sub-title"]}>
               {/* github.com/Yidadaa/ChatGPT-Next-Web */}
-              aixiaoxin.cloud
+              网址： https://aixiaoxin.cloud
+            </div>
+            <div className={styles["sub-title"]}>
+              {/* github.com/Yidadaa/ChatGPT-Next-Web */}
+              公众号：AI小新
             </div>
             <div className={styles["icons"]}>
               <ExportAvatar avatar={config.avatar} />

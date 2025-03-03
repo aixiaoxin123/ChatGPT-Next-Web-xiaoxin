@@ -44,9 +44,9 @@ export const DEFAULT_CONFIG = {
   dontShowMaskSplashScreen: false, // dont show splash screen when create chat
   hideBuiltinMasks: false, // dont add builtin masks
 
-  customModels: "",
+  customModels: "deepseek-chat",
   models: DEFAULT_MODELS as any as LLMModel[],
-
+  hideContext: true,
   modelConfig: {
     // model: "gpt-4o-mini" as ModelType,
     model: "deepseek-chat" as ModelType, //修改deepseek-chat作为基础聊天模型

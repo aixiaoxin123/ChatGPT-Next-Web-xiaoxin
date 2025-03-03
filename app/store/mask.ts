@@ -115,6 +115,7 @@ export const useMaskStore = createPersistStore(
       if (version < 3.1) {
         const updatedMasks: Record<string, Mask> = {};
         Object.values(newState.masks).forEach((m) => {
+          // m.hideContext=true //默认隐藏面具内容
           updatedMasks[m.id] = m;
         });
         newState.masks = updatedMasks;
