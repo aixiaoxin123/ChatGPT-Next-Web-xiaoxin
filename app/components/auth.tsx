@@ -10,6 +10,7 @@ import BotIcon from "../icons/bot.svg";
 import { use, useEffect } from "react";
 import { getClientConfig } from "../config/client";
 import { json } from "stream/consumers";
+import { FALSE } from "sass";
 
 function wrapPromise(promise: Promise<any>) {
   let status = "pending";
@@ -76,12 +77,12 @@ function query_account_by_key(
       .then((res) => {
         // Set default model from env request
         // alert(res.data)
-        // console.log(res.data);
+        console.log(res.data);
         key_num = res.data.key_num;
         user_type = res.data.user_type;
         // alert(key_num + "/" + user_type);
 
-        if (key_num) {
+        if (user_type > -1) {
           accessStore.key_num = key_num;
           accessStore.user_type = user_type;
           if (user_type === 0) {
@@ -98,6 +99,8 @@ function query_account_by_key(
           // alert("用户登录成功！");
           navigate(Path.Chat);
         } else {
+          // alert(key_num + "/" + user_type);
+
           alert("邀请码错误，请关注  公众号：AI小新 获取！");
           accessStore.key_num = -2;
           accessStore.user_type = -2;

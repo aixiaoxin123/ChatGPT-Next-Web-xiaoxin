@@ -793,6 +793,33 @@ function _Chat() {
 
   const doSubmit = (userInput: string) => {
     if (userInput.trim() === "") return;
+
+    const accessStore = useAccessStore.getState();
+    const session = chatStore.currentSession();
+    const modelConfig = session.mask.modelConfig;
+    console.log("modelConfig", modelConfig);
+    // alert(modelConfig.model)
+
+    // alert(accessStore.user_type)
+    let model_type = modelConfig.model;
+    //暂时不做限制了
+    // const [userInput, setUserInput] = useState("");
+
+    if (
+      model_type.includes("grok-3-deepsearch") ||
+      model_type.includes("grok-3-reasoner")
+    ) {
+      if (accessStore.user_type < 2) {
+        alert(
+          "grok-3-deepsearch 和 grok-3-reasoner 模型，需要开通会员才可以使用！请更换grok-3 模型体验！",
+        );
+        // setUserInput("");
+        // setUserInput(userInput);
+        // setUserInput(userInput);
+        return false;
+      }
+    }
+
     const matchCommand = chatCommands.match(userInput);
 
     if (matchCommand.matched) {
@@ -805,6 +832,7 @@ function _Chat() {
     chatStore
       .onUserInput(userInput, attachImages)
       .then(() => setIsLoading(false));
+
     setAttachImages([]);
     localStorage.setItem(LAST_INPUT_KEY, userInput);
     setUserInput("");

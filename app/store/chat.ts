@@ -27,7 +27,9 @@ import { nanoid } from "nanoid";
 import { createPersistStore } from "../utils/store";
 import { collectModelsWithDefaultModel } from "../utils/model";
 import { useAccessStore } from "./access";
-import React from "react";
+import React, { use } from "react";
+
+import { useState } from "react";
 
 export type ChatMessage = RequestMessage & {
   date: string;
@@ -335,17 +337,19 @@ export const useChatStore = createPersistStore(
         const modelConfig = session.mask.modelConfig;
 
         const userContent = fillTemplateWith(content, modelConfig);
-        console.log("[User Input] after template: ", userContent);
-        // alert(modelConfig.model);
+
+        // let model_type = modelConfig.model;
+        //暂时不做限制了
         // const [userInput, setUserInput] = useState("");
-        let model_type = modelConfig.model;
-        if (model_type.includes("gpt-4o")) {
-          if (accessStore.user_type < 2) {
-            alert("gpt4系列模型，需要开通会员才可以使用！请更换其他模型！");
-            // setUserInput("");
-            return false;
-          }
-        }
+
+        // if (model_type.includes("gpt-4o")) {
+        //   if (accessStore.user_type < 2) {
+        //     alert("gpt4系列模型，需要开通会员才可以使用！请更换其他模型！");
+        //     // setUserInput("");
+        //     // setUserInput(content);
+        //     return false;
+        //   }
+        // }
 
         let mContent: string | MultimodalContent[] = userContent;
 

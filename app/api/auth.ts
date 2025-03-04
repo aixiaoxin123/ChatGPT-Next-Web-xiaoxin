@@ -46,7 +46,7 @@ export async function auth(req: NextRequest, modelProvider: ModelProvider) {
   // console.log("apiKey: "+apiKey)
   console.log("进入api调用之前");
   const query_result = await query_account_by_key(accessCode);
-  // console.log(query_result)
+  console.log(query_result);
   // query_account_by_key(accessCode)
 
   console.log("结束api调用,输出result_data");

@@ -223,6 +223,8 @@ const openaiModels = [
   // "gpt-4-1106-preview",
 ];
 
+const grokModels = ["grok-3", "grok-3-reasoner", "grok-3-deepsearch"];
+
 const googleModels = [
   "gemini-1.0-pro",
   "gemini-1.5-pro-latest",
@@ -294,6 +296,16 @@ export const DEFAULT_MODELS = [
       providerType: "openai",
     },
   })),
+  ...grokModels.map((name) => ({
+    name,
+    available: true,
+    provider: {
+      id: "grok",
+      providerName: "grok",
+      providerType: "openai",
+    },
+  })),
+
   // ...openaiModels.map((name) => ({
   //   name,
   //   available: false,
